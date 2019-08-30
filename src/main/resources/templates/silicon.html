@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8"/>
+
+	<title>LTR Application - Request Silicons</title>
+
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}"/>
+	<link rel="stylesheet" th:href="@{/css/style.css}"/>
+	
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	
+	<link rel="stylesheet" th:href="@{/css/bootstrap/jquery.dataTables.min.css}"/>
+	<link rel="stylesheet" th:href="@{/css/bootstrap/dataTables.bootstrap4.min.css}"/>
+
+</head>
+
+<body>
+
+			<!-- Start of Row 1  -->
+			<div class="row">
+			  <div class="col-md-12">
+					<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+					  <a class="navbar-brand" href="#" th:href="@{/admin/index}">LTR</a>
+					  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					    <span class="navbar-toggler-icon"></span>
+					  </button>
+					  <div class="collapse navbar-collapse" id="navbarNav">
+					    <ul class="navbar-nav">
+				          <li class="nav-item dropdown">
+				            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
+				            <div class="dropdown-menu" aria-labelledby="dropdown03">
+				              <a class="dropdown-item" href="#">Change Password</a>
+				            </div>
+				          </li>						    
+					      <li sec:authorize="hasRole('ROLE_INVENTORY')" class="nav-item">
+					        <a class="nav-link" href="#" th:href="@{/admin/requestSiliconbyUsers}">Request Silicon</a>
+					      </li>
+					      <li class="nav-item active">
+					        <a class="nav-link" href="#" th:href="@{/admin/silicon}">Silicons<span class="sr-only">(current)</span></a>
+					      </li>				      
+					    </ul>
+					  </div>
+				      <div class="navbar-nav">
+				      		<a class="nav-item nav-link" href="#">Logout</a>
+				      </div>					  
+					</nav>
+			  </div>
+			</div>
+			<!-- End of Row 1  -->
+			<br/>
+			<!-- Start of Row 2  -->
+			<div class="row">
+
+			  <div class="col-sm-12">
+				<div class="card text-center">
+				  <div class="card-header">
+
+				  </div>
+
+				  <div class="card-body">
+				  					
+				    <h1 sec:authentication="name">Hi!</h1>
+				    <div sec:authorize="hasAuthority('ROLE_INVENTORY')">
+					<button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#siliconModal" type="submit">
+						<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+						Add new Silicon
+					</button>	
+					</div>
+						    
+				  </div>
+
+				</div>
+			  </div>
+
+			</div>
+			<!-- End of Row 2  -->
+			<br/>
+			<!-- start of Row 2.5  -->
+			<div class="row">
+			
+				<div class="col-md-12">
+				
+						<div class="modal fade" id="siliconModal" tabindex="-1" role="dialog" aria-labelledby="siliconModal" aria-hidden="true">
+							  <div class="modal-dialog modal-lg" role="document">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h5 class="modal-title" id="siliconModalLabel">Save Silicon</h5>
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							          <span aria-hidden="true">&times;</span>
+							        </button>
+							      </div>
+							      <div class="modal-body">
+							      
+							      	 <form class="needs-validation" th:action="@{/admin/siliconAdd}" th:object="${silicon}" method="post" novalidate>
+
+									      <div class="form-row">
+									      
+											    <div class="col-md-6 mb-3">
+											      <div class="input-group">
+											        <div class="input-group-prepend">
+											          <span class="input-group-text" id="inputGroupPrepend">ID</span>
+											        </div>
+											        <input type="number" class="form-control" id="id" name="id" aria-describedby="inputGroupPrepend" readonly>
+											        <div class="invalid-feedback">
+											          Please write a valid ID.
+											        </div>
+											      </div>
+											    </div>
+											    
+											    <div class="col-md-6 mb-3">
+											      <div class="input-group">
+											        <div class="input-group-prepend">
+											          <span class="input-group-text" id="inputGroupPrepend">Type Silicon:</span>
+											        </div>
+												    <select class="custom-select" id="typeSilicon" name="typeSilicon" required>
+												      <option value="">-- Type Silicon --</option>
+												      <option value="CPU">CPU</option>
+													  <option value="PCH">PCH</option>
+												    </select>
+											        <div class="invalid-feedback">
+											          Please write a valid Type Silicon.
+											        </div>
+											      </div>
+											    </div>
+											   				    									      
+									      </div>
+							      	
+									      <div class="form-row">
+									      
+											    <div class="col-md-6 mb-3">
+											      <div class="input-group">
+											        <div class="input-group-prepend">
+											          <span class="input-group-text" id="inputGroupPrepend">MIR #</span>
+											        </div>
+											        <input type="number" class="form-control" id="mir" name="mir" aria-describedby="inputGroupPrepend" required>
+											        <div class="invalid-feedback">
+											          Please write a valid MIR.
+											        </div>
+											      </div>
+											    </div>
+
+											    <div class="col-md-6 mb-3">
+											      <div class="input-group">
+											        <div class="input-group-prepend">
+											          <span class="input-group-text" id="inputGroupPrepend">Visual ID:</span>
+											        </div>
+											        <input type="text" class="form-control" id="siliconVisualId" name="siliconVisualId" aria-describedby="inputGroupPrepend" required>
+											        <div class="invalid-feedback">
+											          Please write a valid VID.
+											        </div>
+											      </div>
+											    </div>											   				    
+									      
+									      </div>
+								      
+									      <div class="form-row">
+									      
+											    <div class="col-md-6 mb-3">
+											      <div class="input-group">
+											        <div class="input-group-prepend">
+											          <span class="input-group-text" id="inputGroupPrepend">Silicon Name:</span>
+											        </div>
+												    <select class="custom-select" id="siliconName" name="siliconName" required>
+												      <option value="">--Select Name--</option>
+												      <option value="COFFE LAKE">COFFE LAKE</option>
+												      <option value="KABY LAKE">KABY LAKE</option>
+												      <option value="SKYLAKEX">SKYLAKEX</option>
+												      <option value="BROXTON">BROXTON</option>
+												      <option value="KNIGHTS LANDING-D">NIGHT LANDING-D</option>
+												    </select>
+											        <div class="invalid-feedback">
+											          Please write a valid Silicon Name.
+											        </div>
+											      </div>
+											    </div>
+											   				    
+											    <div class="col-md-6 mb-3">
+											      <div class="input-group">
+											        <div class="input-group-prepend">
+											          <span class="input-group-text" id="inputGroupPrepend">Date Admission:</span>
+											        </div>
+												    <input type="date" class="form-control" id="dateAdmission" name="dateAdmission" aria-describedby="inputGroupPrepend" readonly>
+											        <div class="invalid-feedback">
+											          Please write a valid Admission Date.
+											        </div>
+											      </div>
+											    </div>
+											    									      
+									      </div>
+										  <h5 class="modal-title" id="siliconModalLabel">Additional Information</h5>
+										  <hr>
+									      <div class="form-row">
+									      
+									      		<div class="col-md-6 mb-3">
+											      <div class="input-group">
+											        <div class="input-group-prepend">
+											          <span class="input-group-text" id="inputGroupPrepend">QDF</span>
+											        </div>
+											        <input type="text" class="form-control" id="qdf" name="qdf" aria-describedby="inputGroupPrepend">
+											        <div class="invalid-feedback">
+											          Please write a valid QDF.
+											        </div>
+											      </div>
+											    </div>
+									      
+											    
+											    <div class="col-md-6 mb-3">
+											      <div class="input-group">
+											        <div class="input-group-prepend">
+											          <span class="input-group-text" id="inputGroupPrepend">Stepping:</span>
+											        </div>
+											        <input type="text" class="form-control" id="stepping" name="stepping" aria-describedby="inputGroupPrepend">
+											        <div class="invalid-feedback">
+											          Please write a valid Stepping.
+											        </div>
+											      </div>
+											    </div>											   				    
+									      
+									      </div>
+									      	
+									      <div class="form-row">
+									      
+											    <div class="col-md-6 mb-3 cpuId" >
+											      <div class="input-group">
+											        <div class="input-group-prepend">
+											          <span class="input-group-text" id="inputGroupPrepend">CPU ID</span>
+											        </div>
+											        <input type="text" class="form-control" id="cpuId" name="cpuId" aria-describedby="inputGroupPrepend">
+											        <div class="invalid-feedback">
+											          Please write a valid CPU ID.
+											        </div>
+											      </div>
+											    </div>
+											    											    
+											    <hr>
+											    
+											    											    									        
+									      </div>
+
+									      <div class="form-row">
+									      
+										    <div class="col-md-6 mb-3">
+										      <div class="input-group">
+										        <div class="input-group-prepend">
+										          <span class="input-group-text" id="inputGroupPrepend">Date Delivered:</span>
+										        </div>
+											    <input type="date" class="form-control" id="dateDelivered" name="dateDelivered" aria-describedby="inputGroupPrepend" readonly>
+										        <div class="invalid-feedback">
+										          Please write a valid Delivered Date.
+										        </div>
+										      </div>
+										    </div>
+											    											    											    											    
+											  <div class="col-md-6 mb-3 invisible">
+											      <div class="input-group">
+											        <div class="input-group-prepend">
+											          <span class="input-group-text" id="inputGroupPrepend">User Requested:</span>
+											        </div>
+												    <select class="custom-select" id="userRequest" name="userRequest">
+												      <option value="">--Select User To Assign--</option>
+												      <option th:each="userRequest : ${users}" th:value="${userRequest.userName}" th:utext="${userRequest.userName}"></option>
+												    </select>
+											        <div class="invalid-feedback">
+											          Please write a valid User.
+											        </div>
+											      </div>
+											   </div>											   				    
+									         
+									        
+									      </div>
+									      
+	
+									      <div class="form-row">
+									      
+										    <div class="col-md-6 mb-3">
+										      <div class="input-group">
+										        <div class="input-group-prepend">
+										          <span class="input-group-text" id="inputGroupPrepend">Status Silicon:</span>
+										        </div>
+											    <input type="text" class="form-control" id="statusSilicon" value="AVAILABLE" name="statusSilicon" aria-describedby="inputGroupPrepend" readonly>
+										        <div class="invalid-feedback">
+										          Please write a valid Status Silicon.
+										        </div>
+										      </div>
+										    </div>
+											    											    
+											  <div class="col-md-6 mb-3 invisible">
+											      <div class="input-group">
+											        <div class="input-group-prepend">
+											          <span class="input-group-text" id="inputGroupPrepend">User Owner:</span>
+											        </div>
+												    <select class="custom-select" id="userOwner" name="userOwner">
+												      <option value="">--Select Owner To Assign--</option>
+												      <option th:each="useOwner : ${users}" th:value="${useOwner.userName}" th:utext="${useOwner.userName}"></option>
+												    </select>
+											        <div class="invalid-feedback">
+											          Please write a valid User Owner.
+											        </div>
+											      </div>
+											   </div>
+											   											   											    											    											    									        
+									      </div>	
+
+									      <div class="form-row">
+									      
+										    <div class="col-md-6 mb-3">
+										      <div class="input-group">
+										        <div class="input-group-prepend">
+										          <span class="input-group-text" id="inputGroupPrepend">Last User Returned:</span>
+										        </div>
+											    <input type="text" class="form-control" id="userLastReturned" name="userLastReturned" aria-describedby="inputGroupPrepend" readonly>
+										        <div class="invalid-feedback">
+										          Please write a valid User Returned.
+										        </div>
+										      </div>
+										    </div>
+											    											    
+											  <div class="col-md-6 mb-3 invisible">
+											      <div class="input-group">
+											        <div class="input-group-prepend">
+											          <span class="input-group-text" id="inputGroupPrepend">Platform Assigned:</span>
+											        </div>
+												    <select class="custom-select" id="platform" name="platform">
+												      <option value="">--Select Platform to Assign--</option>
+												      <option th:each="platform : ${platforms}" th:value="${platform.platformId}" th:utext="${platform.name}"></option>
+												    </select>
+											        <div class="invalid-feedback">
+											          Please write a valid Platform.
+											        </div>
+											      </div>
+											   </div>
+											   											   											    											    											    									        
+									      </div>									    
+
+									      <div class="form-row">
+									      
+											    <div class="col-md-6 mb-3 invisible">
+											      <div class="input-group">
+											        <div class="input-group-prepend">
+											          <span class="input-group-text" id="inputGroupPrepend">Socket:</span>
+											        </div>
+												    <select class="custom-select" id="socket" name="socket">
+												      <option value="">--Select Socket--</option>
+												      <option value="SOCKET 0">SOCKET 0</option>
+												      <option value="SOCKET 1">SOCKET 1</option>
+												      <option value="SOCKET 2">SOCKET 2</option>
+												      <option value="SOCKET 3">SOCKET 3</option>
+												      <option value="TESTING">TESTING</option>
+												    </select>
+											        <div class="invalid-feedback">
+											          Please write a valid Socket.
+											        </div>
+											      </div>
+											    </div>										    
+											   											   											    											    											    									        
+									      </div>
+									      
+									     <div class="panel-footer">
+										     <div class="form-group text-right">
+										         <button type="submit" class="btn btn-primary">Save Silicon</button>
+										     </div>											     
+									     </div>
+								   				    								      							      
+							     	 </form>
+
+							      </div>
+
+							    </div>
+							  </div>
+						</div>
+				
+				</div>
+			
+			</div>
+			<!-- End of Row 2.5  -->
+			
+			<!-- start of Row 3  -->
+
+			<div class="row">
+
+			<div class="col-sm-12">
+				<br/>
+				<div class="panel panel-default">
+					<div class="panel-heading"></div>
+					<table class="table table-striped table-bordered"  id="listSilicon">
+						<thead>
+							<tr>
+								<th>MIR #</th>
+								<th>QDF</th>
+								<th>CPU ID</th>
+								<th>Silicon Name</th>
+								<th>Visual ID</th>
+								<th>Stepping</th>
+								<th>Type</th>																
+								<th>Date delivered</th>								
+								<th>User Request</th>
+								<th>Socket</th>
+								<th>Status</th>
+								<th>Current System</th>
+								<th>Own System</th>
+								<th sec:authorize="hasRole('ROLE_INVENTORY')">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="silicon : ${silicons}">
+							     <td class="align-middle" th:text="${silicon.mir}"></td>
+							     <td class="align-middle" th:text="${silicon.qdf}"></td>
+							     <td class="align-middle" th:text="${silicon.cpuId}"></td>
+							     <td class="align-middle" th:text="${silicon.siliconName}"></td>
+							     <td class="align-middle" th:text="${silicon.siliconVisualId}"></td>
+							     <td class="align-middle" th:text="${silicon.Stepping}"></td>
+							     <td class="align-middle" th:text="${silicon.typeSilicon}"></td>
+							     <td class="align-middle" th:text="${#dates.format(silicon.dateDelivered, 'dd-MMM-yyyy')}"></td>
+							     <td class="align-middle" th:if="${silicon.userRequest != null}" th:text="${silicon.userRequest.userName}"></td>
+							     <td class="align-middle" th:if="${silicon.userRequest == null}">Null</td>
+							     <td class="align-middle" th:text="${silicon.socket}"></td>
+							     <td class="align-middle" th:if="${silicon.statusSilicon == 'AVAILABLE'}">
+									<div class="btn-group" data-toggle="modal" data-target="#requestSilicon" th:data-siliconidrequest="${silicon.id}" role="group" aria-label="Basic example">
+									  <button type="button" class="btn btn-success">Request</button>
+									</div>									
+							     </td>
+							     <td class="align-middle" th:if="${silicon.statusSilicon == 'REQUESTED'}">
+									<div class="btn-group" role="group" aria-label="Basic example">
+									  <button type="button" class="btn btn-warning">Requested</button>
+									</div>									
+							     </td>	
+							     <td class="align-middle" th:if="${silicon.statusSilicon == 'ASSIGNED'}">
+									<div class="btn-group" role="group" aria-label="Basic example">
+									  <button type="button" class="btn btn-info"><small>Waiting for Assign to system</small></button>
+									</div>									
+							     </td>							     						     
+							     <td class="align-middle" th:if="${silicon.statusSilicon == 'BUSY'}">
+									<div class="btn-group" role="group" aria-label="Basic example">
+									  <button type="button" class="btn btn-danger">Busy</button>
+									</div>	
+							     </td>								     							     
+							     <td class="align-middle" th:if="${silicon.platform != null}" th:text="${silicon.platform.name}"></td>
+							     <td class="align-middle" th:if="${silicon.platform == null}"></td>
+							     <td class="align-middle" th:if="${silicon.platformOwn != null}" th:text="${silicon.platformOwn.name}"></td>
+							     <td class="align-middle" th:if="${silicon.platformOwn == null}"></td>							     
+							     <td sec:authorize="hasRole('ROLE_INVENTORY')">
+									<a href="#" th:href="@{/admin/silicon?siliconId=__${silicon.id}__}">
+										<button  type="button" class="btn btn-default" >
+											<i class="fa fa-pencil"></i>
+										</button>
+									</a>
+									
+									
+									<button type="button" data-toggle="modal" data-target="#deleteSilicon" th:data-siliconiddelete="${silicon.id}" class="btn btn-danger" sec:authorize="hasRole('ROLE_INVENTORY')">
+										<i class="fa fa-trash"></i>
+									</button>
+									
+								</td>
+																								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div>
+					<hr/>
+				</div>
+			
+			  </div>
+
+			</div>
+
+			<!-- End of Row 3  -->
+			
+			<!-- start of row 4 -->
+			
+			<div class="col-md-12">
+					 <!-- The Modal -->
+				 <div class="modal fade" id="modalMessaging">
+						    <div class="modal-dialog modal-dialog-centered">
+						      <div class="modal-content">
+						      
+						        <!-- Modal Header -->
+						        <div class="modal-header">
+						          <h4 class="modal-title"></h4>
+						          <button type="button" class="close" data-dismiss="modal">&times;</button>
+						        </div>
+						        
+						        <!-- Modal body -->
+						        <div class="modal-body">
+						          <p id="message"></p>
+						        </div>
+						        
+						        <!-- Modal footer -->
+						        <div class="modal-footer">
+						          
+						        </div>
+						        
+						      </div>
+						    </div>
+				</div>							 
+			</div>
+			
+			<!-- start of row 4 -->
+			
+			
+  			<!-- Modal for  Delete Silicon-->
+  			
+  			<div class="row">
+  			
+  				<!-- Modal -->
+					<div class="modal fade" id="deleteSilicon" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel">Delete Silicon</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					        <h1 sec:authentication="name"></h1> <h6 align="center">Are you Sure to delete this Silicon?</h6>
+					      </div>
+					      <div class="modal-footer">
+					        
+					        <form class="needs-validation" th:action="@{/admin/deleteSilicon}" method="post" novalidate>
+					        
+					          <div class="form-group">
+					            <label for="recipient-name" class="col-form-label"></label>
+					            <input type="hidden" class="form-control" id="siliconIdDelete" name="siliconId" required>
+						        <div class="invalid-feedback">
+						          Please write a valid Id Silicon.
+						        </div>
+					          </div>
+					          	<button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>									        										        	
+					        	<button type="submit" class="btn btn-primary">Yes, I'm sure</button>
+					        </form>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+  			</div>
+  			
+  			<!-- End Modal for Delete Silicon -->				
+	
+  			<!-- Modal for  Request Silicon row 5-->
+  						
+  			<div class="row">
+  			
+  				<!-- Modal -->
+					<div class="modal fade" id="requestSilicon" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel">Request Silicon</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					        <h1 sec:authentication="name"></h1> <h6 align="center">Are you Sure to Request this Silicon?</h6>
+					      </div>
+					      <div class="modal-footer">
+					        
+					        <form class="needs-validation" th:action="@{/admin/requestSiliconFromInventory}" method="post" novalidate>
+					        
+					          <div class="form-group">
+					            <label for="recipient-name" class="col-form-label"></label>
+					            <input type="hidden" class="form-control" id="siliconIdRequest" name="siliconId" required>
+						        <div class="invalid-feedback">
+						          Please write a valid Id Silicon.
+						        </div>
+					          </div>
+					          	<button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>									        										        	
+					        	<button type="submit" class="btn btn-primary">Yes, I'm sure</button>
+					        </form>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+  			</div>
+  			
+  			<!-- End Modal for Request Silicon row 5 -->
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script th:src="@{/js/jquery.js}"></script>
+    <script th:src="@{/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/js/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{/js/popper.js}"></script>
+    <script th:src="@{/js/bootstrap.js}"></script>
+
+    
+    <script th:inline="javascript">
+    
+	(function() {
+		  'use strict';
+		  window.addEventListener('load', function() {
+		    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+		    var forms = document.getElementsByClassName('needs-validation');
+		    // Loop over them and prevent submission
+		    var validation = Array.prototype.filter.call(forms, function(form) {
+		      form.addEventListener('submit', function(event) {
+		        if (form.checkValidity() === false) {
+		          event.preventDefault();
+		          event.stopPropagation();
+		        }
+		        form.classList.add('was-validated');
+		      }, false);
+		    });
+		  }, false);
+		})();
+	
+	$(document).ready(function(){
+		
+	    $('#listSilicon').DataTable({
+	    	responsive: true
+	    });
+	    
+	    $('#typeSilicon').on('change', function() {
+	    	  if(this.value == "PCH"){
+	    		  $(".cpuId").hide();
+	    		  $("#cpuId").val("");
+	    	  }else{
+	    		  $(".cpuId").show();
+	    	  }
+	    });
+	    
+		/*[# th:if="${success == 'requested'}"]*/
+		
+			$("#modalMessaging").modal('toggle');
+		    $("#message").text("Silicon have been requested successfully");
+	
+		/*[/]*/
+	    
+	    
+		/*[# th:if="${success == 'inserted'}"]*/
+		
+			$("#modalMessaging").modal('toggle');
+		    $("#message").text("Silicon have been inserted successfully");
+		
+		/*[/]*/
+		
+	    /*[# th:if="${success == 'updated'}"]*/
+	   	     $("#modalMessaging").modal('toggle');
+	   	 	 $("#message").text("Silicon have been updated successfully");
+		
+		/*[/]*/
+		
+	    /*[# th:if="${success == 'deleted'}"]*/
+	   	     $("#modalMessaging").modal('toggle');
+	   	 	 $("#message").text("Silicon have been deleted successfully");
+		
+		/*[/]*/		
+		
+		
+	    /*[# th:if="${siliconUpdate != null}"]*/
+	   	     
+	    	$("#id").val( "[(${siliconUpdate.id})]" );
+	    	$("#typeSilicon").val( "[(${siliconUpdate.typeSilicon})]" );
+	    	$("#mir").val( "[(${siliconUpdate.mir})]" );
+	    	$("#siliconVisualId").val( "[(${siliconUpdate.siliconVisualId})]" );
+	    	$("#siliconName").val( "[(${siliconUpdate.siliconName})]"  );
+	    	$("#socket").val( "[(${siliconUpdate.socket})]"  );
+	    	$("#stepping").val( "[(${siliconUpdate.stepping})]"  );
+	    	$("#cpuId").val( "[(${siliconUpdate.cpuId})]"  );
+	    	$("#statusSilicon").val( "[(${siliconUpdate.statusSilicon})]"  );
+	  
+	    	$("#qdf").val( "[(${siliconUpdate.qdf})]"  );
+	    	$("#dateAdmission").val( "[(${#dates.format(siliconUpdate.dateAdmission, 'yyyy-MM-dd')})]"  );
+	    	$("#dateDelivered").val( "[(${#dates.format(siliconUpdate.dateDelivered, 'yyyy-MM-dd')})]"  );
+	    	
+	    	/*[# th:if="${siliconUpdate.userRequest != null}"]*/
+	    		$("#userRequest").val( "[(${siliconUpdate.userRequest.userName})]"  );
+	    	/*[/]*/
+	    	/*[# th:if="${siliconUpdate.platform != null}"]*/
+	    		$("#platform").val( "[(${siliconUpdate.platform.platformId})]"  );
+	    	/*[/]*/
+	    	/*[# th:if="${siliconUpdate.userLastReturned != null}"]*/
+	    		$("#userLastReturned").val( "[(${siliconUpdate.userLastReturned.userName})]"  );
+	    	/*[/]*/
+	    	
+	    	var siliconUpdateUserOwner = [(${siliconUpdate.userOwner} != null ? true:false)];
+	 	    		    	
+	    	if(siliconUpdateUserOwner){
+	    		$("#userOwner").val( "[(${siliconUpdate.userOwner.userName})]"  );
+	    	}	  
+	    	    	
+	    		    	    	
+	    	$("#siliconModal").modal("toggle");
+		
+		/*[/]*/
+		
+		
+		  $('#requestSilicon').on('show.bs.modal', function (event) {
+			  
+			  var button = $(event.relatedTarget);// Button that triggered the modal
+			  var siliconIdRequest = button.data('siliconidrequest');
+			  // Extract info from data-* attributes
+			  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+			  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+			  
+			  $("#siliconIdRequest").val(siliconIdRequest);
+			  		 	  		  
+		  });
+		
+		  $('#deleteSilicon').on('show.bs.modal', function (event) {
+			  
+			  var button = $(event.relatedTarget);// Button that triggered the modal
+			  var siliconIdDelete = button.data('siliconiddelete');
+			  // Extract info from data-* attributes
+			  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+			  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+			  
+			  $("#siliconIdDelete").val(siliconIdDelete);
+			  		 	  		  
+		  });		
+	    
+	    	
+	});
+
+    
+    </script>
+    
+
+</body>
+</html>

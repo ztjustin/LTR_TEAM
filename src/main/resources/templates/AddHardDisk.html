@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8"/>
+
+	<title>PMV Application - Add new Hard Disk</title>
+
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}"/>
+	
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+	<div class="jumbotron" th:object="${platform}">
+		<div class="container">
+		
+			<!-- Start of Row 1  -->
+			<div class="row">
+			  <div class="col-sm-12">
+					<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+					  <a class="navbar-brand" href="#" th:href="@{/admin/index}">PMV</a>
+					  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					    <span class="navbar-toggler-icon"></span>
+					  </button>
+					  <div class="collapse navbar-collapse" id="navbarNav">
+					    <ul class="navbar-nav">
+					      <li class="nav-item active">
+					        <a class="nav-link" href="#" th:href="@{/admin/hardDisk}">Hard Disks<span class="sr-only">(current)</span></a>
+					      </li>
+					      <li class="nav-item">
+					        <a class="nav-link" href="#" th:href="@{/admin/cpu}">Cpu's</a>
+					      </li>
+					      <li class="nav-item">
+					        <a class="nav-link" href="#" th:href="@{/admin/pch}">Pch's</a>
+					      </li>
+					    </ul>
+					  </div>
+					</nav>
+			  </div>
+			</div>
+			<!-- End of Row 1  -->
+			
+			<br/>
+			
+			<!-- Start of Row 2  -->
+			<div class="row">
+			
+			  <div class="col-sm-12">
+				<div class="card text-center">
+				  <div class="card-header">
+				    
+				  </div>
+				  <div class="card-body">
+				    <h1><span th:text="${platform.name}"></span></h1>
+				    <small>NEW Hard Disk</small>
+				  </div>
+				  
+				</div>
+			  </div>
+			  			
+			</div>
+			<!-- End of Row 2  -->
+			
+			<!-- start of Row 3  -->
+			<div class="row">
+			
+			  
+			<div class="col-sm-12">
+			  	<br/>
+				<form class="needs-validation" th:action="@{/admin/hardDisk/AddPlatformToHardDisk}" method="post" novalidate>
+				
+				
+				  <div class="form-row">
+				  
+				    <div class="col-md-4 mb-3">
+				      <div class="input-group">
+				        <div class="input-group-prepend">
+				          <span class="input-group-text" id="inputGroupPrepend">Select Hard Disk</span>
+				        </div>
+					    <select class="custom-select" id="hardDiskId" name="hardDiskId" required>
+					      <option value="">Open this select VID</option>
+					      <option th:each="hardDisk : ${hardDisks}" th:value="${hardDisk.hardDiskId}" th:utext="${hardDisk.serial}"></option>
+					    </select>
+					    <div class="invalid-feedback">Please select Hard Disk</div>
+				        <div class="invalid-feedback">
+				          Please write a valid Hard Disk.
+				        </div>
+				      </div>
+				    </div>
+				      				        
+				  </div>
+				
+				  
+				  <div class="form-row">
+				  
+				    <div class="col-md-4 mb-3">
+				      <div class="input-group">
+				        <div class="input-group-prepend">
+				          <span class="input-group-text" id="inputGroupPrepend">Operating System</span>
+				        </div>
+				        <input type="text" class="form-control" id="operatingSystem" name="operatingSystem" readonly required />
+				        <div class="invalid-feedback">
+				          Please write a valid Serial.
+				        </div>
+				      </div>
+				    </div>
+				      				        
+				  </div>				  				
+				
+				  				  		  
+				  <div class="form-row">
+				  
+				    <div class="col-md-4 mb-3">
+				      <div class="input-group">
+				        <div class="input-group-prepend">
+				          <span class="input-group-text" id="inputGroupPrepend">Type System</span>
+				        </div>
+				        <input type="text" class="form-control" id="typeSystem" name="typeSystem" readonly required />
+				        <div class="invalid-feedback">
+				          Please write a valid QDF.
+				        </div>
+				      </div>
+				    </div>
+				      				        
+				  </div>
+				  
+				  <div class="form-row">
+				  
+				    <div class="col-md-4 mb-3">
+				      <div class="input-group">
+				        <input type="hidden" class="form-control" id="platformId" name="platformId" th:value="${platform.platformId}" readonly required />
+				        <div class="invalid-feedback">
+				          Please write a valid Platform ID.
+				        </div>
+				      </div>
+				    </div>
+				    	   				        
+				  </div>				  
+				  		  
+				  <button class="btn btn-success" type="submit">Add CPU</button>
+				  
+				</form>
+				 
+			</div>
+			
+			</div>
+			
+			<!-- End of Row 3  -->
+			
+			<!-- start of Row 4  -->
+			<div class="row">
+			
+			  
+			<div class="col-sm-12">
+			  
+			    <br/>
+			    
+			     <div  th:if="${duplicate != null}" class="alert alert-danger"> Upps! <span th:text="${duplicate}"></span></div>
+			     <div  th:if="${success == 'success'}" class="alert alert-success"><span>CPU added successfully!.</span></div>
+		
+				<br/>
+		
+				<button class="btn btn-lg btn-primary btn-block" type="submit">
+					<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+					Logout
+				</button> 
+				 
+			</div>
+			
+			</div>
+			
+			<!-- End of Row 4  -->
+
+		</div>
+	</div>
+	
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script th:src="@{/js/jquery.js}"></script>
+    <script th:src="@{/js/popper.js}"></script>
+    <script th:src="@{/js/bootstrap.js}"></script> 
+    <script th:src="@{/js/hardDisk.js}"></script>
+	<script>
+	
+	(function() {
+	  'use strict';
+	  window.addEventListener('load', function() {
+	    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+	    var forms = document.getElementsByClassName('needs-validation');
+	    // Loop over them and prevent submission
+	    var validation = Array.prototype.filter.call(forms, function(form) {
+	      form.addEventListener('submit', function(event) {
+	        if (form.checkValidity() === false) {
+	          event.preventDefault();
+	          event.stopPropagation();
+	        }
+	        form.classList.add('was-validated');
+	      }, false);
+	    });
+	  }, false);
+	})();
+	
+
+</script>
+</body>
+</html>
