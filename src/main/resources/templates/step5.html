@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8"/>
 
-	<title>LTR Application - Platforms</title>
+	<title>LTR Application - Platform</title>
 
 	<!-- Required meta tags -->
 	<meta charset="utf-8">
@@ -47,7 +47,7 @@
 					  </div>
 				      <div class="navbar-nav">
 				      		<a class="nav-item nav-link" href="#">Logout</a>
-				      </div>
+				      </div>					  
 					</nav>
 			  </div>
 			</div>
@@ -65,7 +65,8 @@
 				    
 				  </div>
 				  <div class="card-body">
-				    <h1 sec:authentication="name"></h1>
+				     <h1>Long Term Retention (LTR)</h1>
+				     <span sec:authentication="name"></span>
 				  </div>
 				  
 				</div>
@@ -74,64 +75,7 @@
 			</div>
 			<!-- End of Row 2  -->
 			
-			<!-- start of Row 3  -->
-			<div class="row">
 			
-			  
-			<div class="col-sm-12">
-			  	<br/>
-				<div class="panel panel-default">
-					<div class="panel-heading"></div>
-					<table class="table" id="listPlatforms" th:object="${platforms}">
-						<thead>
-							<tr>
-								<th>Bussiness unit</th>
-								<th>Platform Name</th>
-								<th>Project</th>
-								<th>Serial Platform</th>
-								<th>Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="platform : ${platforms}">
-								<td class="align-middle" th:text="${platform.bussinessUnit}"></td>
-								<td class="align-middle" th:text="${platform.name}"></td>										     
-								<td class="align-middle" th:text="${platform.project}"></td>
-								<td class="align-middle" th:text="${platform.serialPlatform}"></td>
-								<td>
-									<a href="#" th:href="@{/admin/platform?platformId=__${platform.platformId}__}">
-									<button type="button" class="btn btn-success">
-										<i class="fa fa-pencil"></i>
-									</button>
-									</a>
-									<a href="#" th:href="@{/admin/platform?platformId=__${platform.platformId}__}">
-									<button type="button" class="btn btn-danger">
-										<i class="fa fa-trash-o"></i>
-									</button>
-									</a>
-								 </td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				
-		
-			     <div  th:if="${error == 'error'}" class="alert alert-danger"><span>Upps!. Something happen!.</span></div>
-			     <div  th:if="${success == 'success'}" class="alert alert-success"><span>Pch updated successfully!.</span></div>
-			     
-			    <div>
-					<hr/>
-				</div>
-					
-				<a href="#" th:href="@{/admin/platformAdd}" class="btn btn-outline-success btn-block">Add new platform</a>
-
-				<br/>
-								 
-			  </div>
-			
-			</div>
-			
-			<!-- End of Row 3  -->
 
 	
     <!-- Optional JavaScript -->
@@ -141,12 +85,6 @@
     <script th:src="@{/js/dataTables.bootstrap4.min.js}"></script>
     <script th:src="@{/js/popper.js}"></script>
     <script th:src="@{/js/bootstrap.js}"></script>
-    
-    <script>
-    
-    $('#listPlatforms').DataTable();
-    
-    </script>
-	
+    	
 </body>
 </html>

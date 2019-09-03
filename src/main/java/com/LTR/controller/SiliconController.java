@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -42,6 +43,25 @@ public class SiliconController {
 	@Autowired
 	@Qualifier("platformServiceImpl")
 	private PlatformService platformServiceImpl;
+	
+	
+	@GetMapping({"/admin/step2/{platformId}"})
+    public ModelAndView indexStep2(@PathVariable(required = true) Long platformId) {
+		
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		ModelAndView model = new ModelAndView("step2");
+		model.addObject("platforms",platformServiceImpl.getAll());
+				
+		if(platformId != null) {
+			model.addObject("platform",platformServiceImpl.getOne(platformId));
+			model.addObject("silicons",siliconServiceImpl.findByPlatform(platformServiceImpl.getOne(platformId)));
+			model.addObject("siliconsbyRequest", siliconServiceImpl.findBySiliconRequestUsers(userServiceImpl.getOne(user.getUsername())));
+			
+		}
+		
+		return model;
+			
+    }
 	
 	
 	@GetMapping({"/admin/silicon"})
@@ -92,7 +112,7 @@ public class SiliconController {
 			}
 			
 								
-		    siliconServiceImpl.addOne(silicon);
+		    Silicon siliconAddOrEdit = siliconServiceImpl.addOne(silicon);
 			model.addAttribute("silicons",siliconServiceImpl.getAll());
 			
 			//Date localDate = new Date();
@@ -101,7 +121,7 @@ public class SiliconController {
 			//newDetailPlatform.setPlatform(platform);
 			//platformDetailServiceImpl.addOne(newDetailPlatform);
 			redirectAttributes.addFlashAttribute("success",messageString);
-			return "redirect:/admin/silicon";
+			return "redirect:/admin/step2/" + siliconAddOrEdit.getPlatform().getPlatformId();
 			
 		}catch(Exception ex) {
 			redirectAttributes.addFlashAttribute("error",messageString);
@@ -120,7 +140,7 @@ public class SiliconController {
     		final RedirectAttributes redirectAttributes,HttpServletRequest request,Model model) {
 				
 		String messageString  = null;
-		LOG.info(siliconId);
+		
 		try {
 						
 		    Silicon siliconToUpdate = siliconServiceImpl.getOne(siliconId);
@@ -134,10 +154,10 @@ public class SiliconController {
 		    siliconToUpdate.setPlatform(platformServiceImpl.getOne(platformId));
 		    
 		    siliconServiceImpl.addOne(siliconToUpdate);
-		    redirectAttributes.addAttribute("platformId", siliconToUpdate.getPlatform().getPlatformId());
+		    //redirectAttributes.addAttribute("platformId", siliconToUpdate.getPlatform().getPlatformId());
 		    messageString = "updatedSilicon";
 			redirectAttributes.addFlashAttribute("success",messageString);
-			return "redirect:/admin/platform";
+			return "redirect:/admin/step2/" + siliconToUpdate.getPlatform().getPlatformId();
 			
 		}catch(Exception ex) {
 			redirectAttributes.addFlashAttribute("error",messageString);
@@ -159,7 +179,7 @@ public class SiliconController {
 			siliconServiceImpl.returnSilicon(siliconId,userServiceImpl.getOne(user.getUsername()));
 			messageString = "deleted";
 			redirectAttributes.addFlashAttribute("success",messageString);
-			return "redirect:/admin/platform";
+			return "redirect:/admin/silicon";
 			
 		}catch(Exception ex) {
 			messageString = "error";
@@ -266,10 +286,10 @@ public class SiliconController {
 			silFromBu.setUserRequest(userServiceImpl.getOne(user.getUsername()));
 			
 			
-			siliconServiceImpl.addOne(silFromBu);
+			Silicon siliconUpdated = siliconServiceImpl.addOne(silFromBu);
 			messageString = "requested";
 			redirectAttributes.addFlashAttribute("success",messageString);
-			return "redirect:/admin/silicon";
+			return "redirect:/admin/step2/" + siliconUpdated.getPlatform().getPlatformId();
 			
 		}catch(Exception ex) {
 			messageString = "error";
@@ -293,7 +313,7 @@ public class SiliconController {
 			redirectAttributes.addAttribute("platformId", platformId);
 			messageString = "assigned";
 			redirectAttributes.addFlashAttribute("success",messageString);
-			return "redirect:/admin/platform";
+			return "redirect:/admin/step2/" + siliconServiceImpl.getOne(siliconId).getPlatform().getPlatformId();
 			
 		}catch(Exception ex) {
 			messageString = "error";

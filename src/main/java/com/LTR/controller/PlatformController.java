@@ -7,14 +7,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -45,23 +43,23 @@ public class PlatformController {
 	@Qualifier("siliconServiceImpl")
 	private SiliconService siliconServiceImpl;
 		
-	@GetMapping({"/admin/platform"})
-    public ModelAndView indexPlatformView(@RequestParam(required = false) Long platformId) {
+	@GetMapping({"/admin/step1", "/admin/step1/{platformId}"})
+    public ModelAndView indexStep1(@PathVariable(required = false) Long platformId) {
 		
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		ModelAndView model = new ModelAndView("AddorEditPlatform");
+		ModelAndView model = new ModelAndView("step1");
 		
 		model.addObject("locations",locationServiceImpl.getAll());	
 		model.addObject("platforms",platformServiceImpl.getAll());
 	
 		if(platformId != null) {
 			model.addObject("platform",platformServiceImpl.getOne(platformId));
-			model.addObject("silicons",siliconServiceImpl.findByPlatform(platformServiceImpl.getOne(platformId)));
-			model.addObject("siliconsbyRequest", siliconServiceImpl.findBySiliconRequestUsers(userServiceImpl.getOne(user.getUsername())));
+			//model.addObject("silicons",siliconServiceImpl.findByPlatform(platformServiceImpl.getOne(platformId)));
+			//model.addObject("siliconsbyRequest", siliconServiceImpl.findBySiliconRequestUsers(userServiceImpl.getOne(user.getUsername())));
+			
 		}
 		
 		return model;
-		
+			
     }
 	
 	
@@ -89,9 +87,9 @@ public class PlatformController {
 			//newDetailPlatform.setLastUpdate(localDate);
 			//newDetailPlatform.setPlatform(platform);
 			//platformDetailServiceImpl.addOne(newDetailPlatform);
-			redirectAttributes.addAttribute("platformId", platf.getPlatformId());
+			//redirectAttributes.addAttribute("platformId", platf.getPlatformId());
 			redirectAttributes.addFlashAttribute("success",messageString);
-			return "redirect:/admin/platform";
+			return "redirect:/admin/step1/" + platf.getPlatformId();
 			
 		}catch(Exception ex) {
 			redirectAttributes.addFlashAttribute("error",messageString);
@@ -100,7 +98,6 @@ public class PlatformController {
 		}
 
     }
-	
 	
 	/*@GetMapping({"/admin/updatePlatform"})
     public String updatePlatform(@RequestParam(name="platformId",required = false) Long platformId,Model model) {

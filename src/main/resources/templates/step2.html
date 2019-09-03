@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8"/>
 
-	<title>LTR Application - Add new platform</title>
+	<title>LTR Application - Platform</title>
 
 	<!-- Required meta tags -->
 	<meta charset="utf-8">
@@ -23,7 +23,8 @@
 		
 			<!-- Start of Row 1  -->
 			<div class="row">
-			  <div class="col-md-12">
+			
+			  <div class="col-sm-12">
 					<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 					  <a class="navbar-brand" href="#" th:href="@{/admin/index}">LTR</a>
 					  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,26 +46,28 @@
 					      </li>				      
 					    </ul>
 					  </div>
-				      <div class="navbar-nav">
+					  <div class="navbar-nav">
 				      		<a class="nav-item nav-link" href="#">Logout</a>
-				      </div>					  
+				      </div>
 					</nav>
 			  </div>
 			</div>
+			
 			<!-- End of Row 1  -->
 			
 			<br/>
 			
 			<!-- Start of Row 2  -->
 			<div class="row">
-			
+
 			  <div class="col-sm-12">
 				<div class="card text-center">
 				  <div class="card-header">
 				    
 				  </div>
 				  <div class="card-body">
-				    <h1>Long Term Retention (LTR)</h1>
+				  	<h1>Long Term Retention (LTR)</h1>
+				    <span sec:authentication="name"></span>
 				  </div>
 				  
 				</div>
@@ -82,16 +85,16 @@
 					<!-- Nav tabs -->
 					<ul class="nav nav-tabs">
 					  <li class="nav-item">
-					    <a class="nav-link active" data-toggle="tab" href="#step1">Step 1(Information)</a>
+					    <a class="nav-link" th:href="@{/admin/step1/__${platform.platformId}__}">Step 1(Information)</a>
 					  </li>
 					  <li class="nav-item">
-					    <a class="nav-link" data-toggle="tab" href="#step2">Step 2(Silicons)</a>
+					    <a class="nav-link active" data-toggle="tab" href="#step2">Step 2(Silicons)</a>
 					  </li>
 					  <li class="nav-item">
-					    <a class="nav-link" data-toggle="tab" href="#step3">Step 3(Devices&Components)</a>
+					    <a class="nav-link" data-toggle="tab" href="#step3">Step 3(DevicesAndComponents)</a>
 					  </li>
 					  <li class="nav-item">
-					    <a class="nav-link" data-toggle="tab" href="#step3">Step 4(BKC&Software)</a>
+					    <a class="nav-link" data-toggle="tab" href="#step3">Step 4(BKCAndSoftware)</a>
 					  </li>
 					  <li class="nav-item">
 					    <a class="nav-link" data-toggle="tab" href="#step3">Step 5(Networking)</a>
@@ -100,358 +103,8 @@
 					
 					<!-- Tab panes -->
 					<div class="tab-content">
-					  <div class="tab-pane container active" id="step1">
-							<!-- start of Row 3  -->
-							<div class="row">
-																	  
-							<div class="col-lg-12">
-							  	<br/>
-								<form class="needs-validation" th:action="@{/admin/platformAddorEdit}"
-								 method="post" novalidate>
-								  
-								  <h4>General Information</h4>
-								  
-								  <div class="form-row">
-								
-								    <div class="col-md-4 mb-3">
-								      <div class="input-group">
-								        <div class="input-group-prepend">
-								          <span class="input-group-text" id="inputGroupPrepend">ID Platform</span>
-								        </div>
-								        <input type="text" class="form-control" id="platformId" name="platformId" aria-describedby="inputGroupPrepend" readonly>
-								        <div class="invalid-feedback">
-								          Please write a valid Name.
-								        </div>
-								      </div>
-								    </div>
-								   				    
-								    <div class="col-md-4 mb-3">
-								      <div class="input-group">
-								        <div class="input-group-prepend">
-								          <span class="input-group-text" id="inputGroupPrepend">Bussiness Unit</span>
-								        </div>
-									    <select class="custom-select" id="bussinessUnit" name="bussinessUnit" required>
-									      <option value="">--Select BU--</option>
-									      <option value="CCG">CCG</option>
-									      <option value="IOTG">IOTG</option>
-									      <option value="DCG">DCG</option>
-									    </select>
-								        <div class="invalid-feedback">
-								          Please write a valid station.
-								        </div>
-								      </div>
-								    </div>
-								    
-								    <div class="col-md-4 mb-3">
-								      <div class="input-group">
-								        <div class="input-group-prepend">
-								          <span class="input-group-text" id="inputGroupPrepend">Location</span>
-								        </div>
-									    <select class="custom-select" id="locationId" name="locationId" required>
-									      <option value="">--Select Location--</option>
-									      <option th:each="location : ${locations}" th:value="${location.locationId}" th:utext="${location.locationId}"></option>
-									    </select>
-								        <div class="invalid-feedback">
-								          Please write a valid Location.
-								        </div>
-								      </div>
-								    </div>				  
-								    				        
-								  </div>
-								  
-								  <div class="form-row">
-								  
-								  	<div class="col-md-4 mb-3">
-									  	<div class="input-group">
-									        <div class="input-group-prepend">
-									          <span class="input-group-text" id="inputGroupPrepend">Name</span>
-									        </div>
-									        <input type="text" class="form-control" id="name" name="name" aria-describedby="inputGroupPrepend" required>
-									        <div class="invalid-feedback">
-									          Please write a valid Name.
-									        </div>
-									    </div>
-								  	</div>
-								  	
-								  	<div class="col-md-4 mb-3">
-								      <div class="input-group">
-								        <div class="input-group-prepend">
-								          <span class="input-group-text" id="inputGroupPrepend">Is Shared Location?</span>
-								        </div>
-									    <select class="custom-select" id="locationIsShared" name="locationIsShared" required>
-									      <option value="">--Select Option--</option>
-									      <option value="false">NO</option>
-									      <option value="true">YES</option>
-									    </select>
-								        <div class="invalid-feedback">
-								          Please write a valid station.
-								        </div>
-								      </div>
-								    </div>
-								    
-								  	<div class="col-md-4 mb-3">
-								      <div class="input-group">
-								        <div class="input-group-prepend">
-								          <span class="input-group-text" id="inputGroupPrepend">Shared Location</span>
-								        </div>
-									    <select class="custom-select" id="locationShared" name="locationShared" required>
-									      <option value="">--Select Location Shared--</option>
-									      <option th:each="location : ${locations}" th:value="${location.locationId}" th:utext="${location.locationId}"></option>
-									    </select>
-								        <div class="invalid-feedback">
-								          Please write a valid Location Shared.
-								        </div>
-								      </div>
-								    </div>
-								    			    
-								  </div>
-								  								  
-								  <div class="form-row">
-								  
-								    <div class="col-md-4 mb-3">
-								    
-      										<label for="myonoffswitch2" style="font-weight: bold;">Initial Status  </label>
-											<div class="onoffswitch2">
-											    <input type="checkbox" name="startStatus" class="onoffswitch2-checkbox" id="myonoffswitch2" checked>
-											    <label class="onoffswitch2-label" for="myonoffswitch2">
-											        <span class="onoffswitch2-inner"></span>
-											        <span class="onoffswitch2-switch"></span>
-											    </label>
-											</div>
-	      							    
-								    
-								    </div>
-								    								    
-								    <div class="col-md-4 mb-3">
-								    
-								        	<label for="myonoffswitch4" style="font-weight: bold;">Cloud or Ilab ready?  </label>
-										    <div class="onoffswitch4">
-										    <input type="checkbox" name="cloudReady" class="onoffswitch4-checkbox" id="myonoffswitch4">
-										    <label class="onoffswitch4-label" for="myonoffswitch4">
-										        <span class="onoffswitch4-inner"></span>
-										        <span class="onoffswitch4-switch"></span>
-										    </label>
-										    </div>								       
-				      							    		    
-								    </div>
-								    
-								    
-								  	<div class="col-md-4 mb-3">
-								      <div class="input-group">
-								        <div class="input-group-prepend">
-								          <span class="input-group-text" id="inputGroupPrepend">Project</span>
-								        </div>
-									    <select class="custom-select" id="project" name="project" required>
-									      <option value="">--Select Project--</option>
-									      <option value="NEON CITY">NEON CITY</option>
-									      <option value="MAYAN CITY">MAYAN CITY</option>
-									      <option value="CROWN PASS">CROWN PASS</option>
-									      <option value="KABY LAKE">KABY LAKE</option>
-									      <option value="SKYLAKE">SKYLAKE</option>
-									      <option value="CASCALAKE">CASCALAKE</option>
-									      <option value="MINERAL HILL">MINERAL HILL</option>
-									    </select>
-								        <div class="invalid-feedback">
-								          Please write a valid Project.
-								        </div>
-								      </div>
-								    </div>									   								    
-	
-								  </div>
-								  
-								  <div class="form-row">
-								  
-								  	<div class="col-md-4 mb-3">
-									  	<div class="input-group">
-									        <div class="input-group-prepend">
-									          <span class="input-group-text" id="inputGroupPrepend">Serial Platform</span>
-									        </div>
-									        <input type="text" class="form-control" id="serialPlatform" name="serialPlatform" aria-describedby="inputGroupPrepend" required>
-									        <div class="invalid-feedback">
-									          Please write a valid Serial Platform.
-									        </div>
-									    </div>
-								  	</div>
-										
-								  	<div class="col-md-4 mb-3">
-									  	<div class="input-group">
-									        <div class="input-group-prepend">
-									          <span class="input-group-text" id="inputGroupPrepend">Model Platform</span>
-									        </div>
-									        <input type="text" class="form-control" id="model" name="model" aria-describedby="inputGroupPrepend" required>
-									        <div class="invalid-feedback">
-									          Please write a valid Model Platform.
-									        </div>
-									    </div>
-								  	</div>
-
-								  	<div class="col-md-4 mb-3">
-									  	<div class="input-group">
-									        <div class="input-group-prepend">
-									          <span class="input-group-text" id="inputGroupPrepend">Chasis Serial</span>
-									        </div>
-									        <input type="text" class="form-control" id="chasisSerial" name="chasisSerial" aria-describedby="inputGroupPrepend" required>
-									        <div class="invalid-feedback">
-									          Please write a valid Chasis Serial
-									        </div>
-									    </div>
-								  	</div>
-								  	
-								  							  
-								  </div>
-								  							 								  
- 								  <div class="form-row">
- 									
-									  	<div class="col-md-4 mb-3">
-										  	<div class="input-group">
-										        <div class="input-group-prepend">
-										          <span class="input-group-text" id="inputGroupPrepend">Chasis Model</span>
-										        </div>
-										        <input type="text" class="form-control" id="chasisModel" name="chasisModel" aria-describedby="inputGroupPrepend" required>
-										        <div class="invalid-feedback">
-										          Please write a valid Chasis Model
-										        </div>
-										    </div>
-									  	</div>
-
-									  	<div class="col-md-4 mb-3">
-										  	<div class="input-group">
-										        <div class="input-group-prepend">
-										          <span class="input-group-text" id="inputGroupPrepend">Asset Number</span>
-										        </div>
-										        <input type="number" class="form-control"  id="asset" name="asset" aria-describedby="inputGroupPrepend" required>
-										        <div class="invalid-feedback">
-										          Please write a valid Asset
-										        </div>
-										    </div>
-									  	</div>
-									  	
-									  	<div class="col-md-4 mb-3">
-									      <div class="input-group">
-									        <div class="input-group-prepend">
-									          <span class="input-group-text" id="inputGroupPrepend">Final Status</span>
-									        </div>
-										    <select class="custom-select" id="finalStatus" name="finalStatus" required>
-										      <option value="">--Select Status--</option>
-										      <option value="true">UP</option>
-										      <option value="false">DOWN</option>
-										    </select>
-									        <div class="invalid-feedback">
-									          Please write a valid Status.
-									        </div>
-									      </div>
-									    </div>	
-								    
-								    									  										  										
- 									</div>
- 									
- 								  <h4>ISMP Information</h4>
- 									
-	 							  <div class="form-row">
-	 									
-											  	<div class="col-md-4 mb-3">
-												  	<div class="input-group">
-												        <div class="input-group-prepend">
-												          <span class="input-group-text" id="inputGroupPrepend">ISMP Serial Number</span>
-												        </div>
-												        <input type="text" class="form-control" id="ismpSerialNumber" name="ismpSerialNumber" aria-describedby="inputGroupPrepend" required>
-												        <div class="invalid-feedback">
-												          Please write a valid ISMP #.
-												        </div>
-												    </div>
-											  	</div>
-											  	
-											  	<div class="col-md-4 mb-3">									  	
-												  	<div class="input-group">
-												        <div class="input-group-prepend">
-												          <span class="input-group-text" id="inputGroupPrepend">ISMP Kit Name</span>
-												        </div>
-												        <input type="text" class="form-control" id="ismpKitName" name="ismpKitName" aria-describedby="ismpKitName" required>
-												        <div class="invalid-feedback">
-												          Please write a valid ISMP Kit Name
-												        </div>
-												    </div>										    
-											  	</div>
-		
-											    <div class="col-md-4 mb-3">
-											      <div class="input-group">
-											        <div class="input-group-prepend">
-											          <span class="input-group-text" id="inputGroupPrepend">Assigned To </span>
-											        </div>
-												    <select class="custom-select" id="assignedTo" name="assignedTo" required>
-												      <option value="">--Select Person--</option>
-												      <option value="IRVING ZUNIGA">IRVING ZUNIGA</option>
-												      <option value="MARCEL CASTRO">MARCEL CASTRO</option>
-												      <option value="JUAN MADRID">JUAN MADRID</option>
-												    </select>
-											        <div class="invalid-feedback">
-											          Please write a valid Person.
-											        </div>
-											      </div>
-											    </div>											  	
-	 									
-	 									</div> 																	  
-								  
-								  <div class="form-row">
-								  
-									    <div class="col-md-4 mb-3">
-									      <div class="input-group">
-									        <div class="input-group-prepend">
-									          <span class="input-group-text" id="inputGroupPrepend">Owned By </span>
-									        </div>
-										    <select class="custom-select" id="ownedBy" name="ownedBy" required>
-										      <option value="">--Select Person--</option>
-										      <option value="IRVING ZUNIGA">IRVING ZUNIGA</option>
-										      <option value="DIEGO CASTRO">DIEGO CASTRO</option>
-										      <option value="JUAN PALOMO">JUAN PALOMO</option>
-										    </select>
-									        <div class="invalid-feedback">
-									          Please write a valid Person.
-									        </div>
-									      </div>
-									    </div>	
-									    
-									  	<div class="col-md-4 mb-3">
-										  	<div class="input-group">
-										        <div class="input-group-prepend">
-										          <span class="input-group-text" id="inputGroupPrepend">ISM Number</span>
-										        </div>
-										        <input type="number" class="form-control" id="ismNumber" name="ismNumber" aria-describedby="inputGroupPrepend" required>
-										        <div class="invalid-feedback">
-										          Please write a valid ISM #.
-										        </div>
-										    </div>
-									  	</div>									  							  
-
-									  	<div class="col-md-4 mb-3">
-										  	<div class="input-group">
-										        <div class="input-group-prepend">
-										          <span class="input-group-text" id="inputGroupPrepend">Date Received</span>
-										        </div>
-										        <input type="date" class="form-control" id="receivedDate" name="receivedDate" aria-describedby="inputGroupPrepend" required>
-										        <div class="invalid-feedback">
-										          Please write a valid Date.
-										        </div>
-										    </div>
-									  	</div>
-								  
-								  </div>
-								  
-								  <button class="btn btn-success" type="submit">Save Platform</button>
-								  
-								</form>
-								
-								<br/>
-								 
-							</div>
-							
-							</div>
-							
-							<!-- End of Row 3  -->					  	
 					  
-					  </div>
-					  
-					  <div class="tab-pane container fade" id="step2">
+					  <div class="tab-pane container active" id="step2">
 					  
 						  <div class="container">
 						  					  				  		
@@ -881,15 +534,16 @@
 					  		</div>
 					  
 					  </div>
-					  <div class="tab-pane container fade" id="step3">...</div>
+					  
 					</div>
+					
+					<!-- End Panes -->
 					
 				</div>
 			</div>
 			<!-- End row 2.5 -->
 			
-								
-			
+
 			<!-- start of Row 4 for Messaging Alerts  -->
 			<div class="row">
 						  
@@ -922,9 +576,9 @@
 			
 			</div>
 			
-			<!-- End of Row 4  -->
-			
-			
+			<!-- End of Row 4  -->			
+
+	
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script th:src="@{/js/jquery.js}"></script>
@@ -932,10 +586,11 @@
     <script th:src="@{/js/dataTables.bootstrap4.min.js}"></script>
     <script th:src="@{/js/popper.js}"></script>
     <script th:src="@{/js/bootstrap.js}"></script>
+  
     
     <script th:inline="javascript">
-		
-		(function() {
+    
+	(function() {
 		  'use strict';
 		  window.addEventListener('load', function() {
 		    // Fetch all the forms we want to apply custom Bootstrap validation styles to
@@ -951,109 +606,74 @@
 		      }, false);
 		    });
 		  }, false);
-		})();
-		
-
-		$(document).ready(function () {
-			
-			    $('#listSilicon').DataTable({
-			    	responsive: true
-			    });
-			    
+	})();
+    
+    $(document).ready(function(){
+    	
 			/*[# th:if="${success == 'updatedSilicon'}"]*/
 			
 				$("#modalMessaging").modal('toggle');
 			    $("#message").text("Silicon have been updated successfully");
-		
+			
 			/*[/]*/
 			
-		    /*[# th:if="${success == 'assigned'}"]*/
+			/*[# th:if="${success == 'assigned'}"]*/
 			
 				$("#modalMessaging").modal('toggle');
 			    $("#message").text("Silicon have been assigned successfully");
-		
+			
 			/*[/]*/
 			
 			/*[# th:if="${success == 'deleted'}"]*/
 			
 				$("#modalMessaging").modal('toggle');
 			    $("#message").text("Silicon have been Returned to Inventory successfully");
+			
+			/*[/]*/
+
+		    /*[# th:if="${platform != null}"]*/
+		    
+		    	$("#platformIdAssignPlatform").val( "[(${platform.platformId})]" );
+				$("#platformIdBu").val( "[(${platform.platformId})]" );
 		
 			/*[/]*/
-		    
-			/*[# th:if="${success == 'inserted'}"]*/
-				$("#modalMessaging").modal('toggle');
-			    $("#message").text("Platform have been inserted successfully");
-			
-			/*[/]*/
-			
-		    /*[# th:if="${success == 'updated'}"]*/
-		   	     $("#modalMessaging").modal('toggle');
-		   	 	 $("#message").text("Platform have been updated successfully");
-			
-			/*[/]*/
-			
-
-		 	 /*[# th:if="${platform != null}"]*/
-		  		
-		 	    $("#platformIdAssignPlatform").val( "[(${platform.platformId})]" );
-				//Assign KitName  
-				$("#platformIdBu").val( "[(${platform.platformId})]" );
-		 	   
-		  		$("#platformId").val( "[(${platform.platformId})]" );
-		  		$("#asset").val( "[(${platform.asset})]" );
-		  		$("#ismpSerialNumber").val( "[(${platform.ismpSerialNumber})]" );
-		  		$("#ismpKitName").val( "[(${platform.ismpKitName})]" );
-		  		$("#bussinessUnit").val("[(${platform.bussinessUnit})]");
-		  		$("#project").val("[(${platform.project})]");
-		  		$("#name").val("[(${platform.name})]");
-		  		$("#chasisSerial").val("[(${platform.chasisSerial})]");
-		  		$("#model").val("[(${platform.model})]");
-		  		$("#serialPlatform").val("[(${platform.serialPlatform})]");
-		  		$("#chasisModel").val("[(${platform.chasisModel})]");
-		  		$("#finalStatus").val("[(${platform.finalStatus})]");
-		  		$("#assignedTo").val("[(${platform.assignedTo})]");
-		  		$("#ismNumber").val("[(${platform.ismNumber})]");
-		  		$("#ownedBy").val("[(${platform.ownedBy})]");
-		  		$("#locationId").val("[(${platform.location.locationId})]");
-		  		$("#locationShared").val("[(${platform.locationShared.locationId})]");
-		  		$("#locationIsShared").val("[(${platform.locationIsShared})]");
-		  		$('#myonoffswitch2').prop('checked', [(${platform.startStatus})]);
-		  		$('#myonoffswitch4').prop('checked', [(${platform.cloudReady})]);		  		
-		  		$("#receivedDate").val("[(${#dates.format(platform.receivedDate, 'yyyy-MM-dd')})]");
-		  
-		  /*[/]*/
-		  
+    	
+	
+		    $('#listSilicon').DataTable({
+		    	responsive: true
+		    });
+	    
+	    
 		  $('#modalUpdateSilicon').on('show.bs.modal', function (event) {
 			  
-		  var button = $(event.relatedTarget);// Button that triggered the modal
-		  var siliconIdUpdate = button.data('siliconid');
-		  var qdfUpdate = button.data('qdf');
-		  var cpuIdUpdate = button.data('cpuid');
-		  var siliconNameUpdate = button.data('siliconame');
-		  var siliconVisualIdUpdate = button.data('siliconvisualid');
-		  var steppingUpdate = button.data('stepping');
-		  var socketUpdate = button.data('socket');
-		  var platfornIdUpdate = button.data('platform');
-		  var typeSiliconUpdate = button.data('typesilicon');
-		  
-		  // Extract info from data-* attributes
-		  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-		  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-		  
-		  $("#siliconId").val(siliconIdUpdate);
-		  $("#qdf").val(qdfUpdate);
-		  $("#cpuId").val(cpuIdUpdate);
-		  $("#siliconName").val(siliconNameUpdate);
-		  $("#siliconVisualId").val(siliconVisualIdUpdate);
-		  $("#typeSilicon").val(typeSiliconUpdate);
-		  $("#socket").val(socketUpdate);
-		  $("#stepping").val(steppingUpdate);
-		  $("#platform").val(platfornIdUpdate);
-		  		 	  		  
-		});
-		  
-		  $('#returnSilicon').on('show.bs.modal', function (event) {
+			  var button = $(event.relatedTarget);// Button that triggered the modal
+			  var siliconIdUpdate = button.data('siliconid');
+			  var qdfUpdate = button.data('qdf');
+			  var cpuIdUpdate = button.data('cpuid');
+			  var siliconNameUpdate = button.data('siliconame');
+			  var siliconVisualIdUpdate = button.data('siliconvisualid');
+			  var steppingUpdate = button.data('stepping');
+			  var socketUpdate = button.data('socket');
+			  var platfornIdUpdate = button.data('platform');
+			  var typeSiliconUpdate = button.data('typesilicon');
+			  
+			  // Extract info from data-* attributes
+			  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+			  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+			  
+			  $("#siliconId").val(siliconIdUpdate);
+			  $("#qdf").val(qdfUpdate);
+			  $("#cpuId").val(cpuIdUpdate);
+			  $("#siliconName").val(siliconNameUpdate);
+			  $("#siliconVisualId").val(siliconVisualIdUpdate);
+			  $("#typeSilicon").val(typeSiliconUpdate);
+			  $("#socket").val(socketUpdate);
+			  $("#stepping").val(steppingUpdate);
+			  $("#platform").val(platfornIdUpdate);
+			  		 	  		  
+			});	    
+	    
+		   $('#returnSilicon').on('show.bs.modal', function (event) {
 			  
 			  var button = $(event.relatedTarget);// Button that triggered the modal
 			  var siliconIdReturn = button.data('siliconidreturn');
@@ -1063,15 +683,11 @@
 			  
 			  $("#siliconIdReturn").val(siliconIdReturn);
 			  		 	  		  
-		  });
-		  		  		 		  		  		  
-	    });
-		
-		
-		
-								
-	</script>
-
-
+		   });
+	});
+    
+	
+    </script>
+    	
 </body>
 </html>
