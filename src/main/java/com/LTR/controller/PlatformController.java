@@ -48,7 +48,7 @@ public class PlatformController {
 		
 		ModelAndView model = new ModelAndView("step1");
 		
-		model.addObject("locations",locationServiceImpl.getAll());	
+		model.addObject("locations",locationServiceImpl.getAll());
 		model.addObject("platforms",platformServiceImpl.getAll());
 	
 		if(platformId != null) {
@@ -93,7 +93,7 @@ public class PlatformController {
 			
 		}catch(Exception ex) {
 			redirectAttributes.addFlashAttribute("error",messageString);
-			LOG.info(ex.toString());
+			LOG.info(ex.getMessage());
 			return "redirect:/admin/platform";
 		}
 

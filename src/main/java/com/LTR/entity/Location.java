@@ -1,13 +1,14 @@
 package com.LTR.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -23,6 +24,9 @@ public class Location implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "bussinessUnit", nullable = false, length= 45)
     private BussinessUnit bussinessUnit;
+    
+    @OneToMany(mappedBy = "location")
+    private List<Platform> platforms;
 
 	public Location() {
 		super();
@@ -43,13 +47,5 @@ public class Location implements Serializable {
 	public void setBussinessUnit(BussinessUnit bussinessUnit) {
 		this.bussinessUnit = bussinessUnit;
 	}
-
-	@Override
-	public String toString() {
-		return "Location [locationId=" + locationId + ", bussinessUnit=" + bussinessUnit + "]";
-	}
        
-	
-	
-
 }

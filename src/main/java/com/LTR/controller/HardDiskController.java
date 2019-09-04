@@ -2,8 +2,8 @@ package com.LTR.controller;
 
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+//import org.apache.commons.logging.Log;
+//import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -14,7 +14,7 @@ import com.LTR.service.PlatformService;
 @Controller
 public class HardDiskController {
 	
-	private static final Log LOG = LogFactory.getLog(HardDiskController.class);
+	//private static final Log LOG = LogFactory.getLog(HardDiskController.class);
 	
 	
 	@Autowired

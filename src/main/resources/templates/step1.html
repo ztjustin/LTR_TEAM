@@ -34,7 +34,7 @@
 				          <li class="nav-item dropdown">
 				            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
 				            <div class="dropdown-menu" aria-labelledby="dropdown03">
-				              <a class="dropdown-item" href="#">Change Password</a>
+				              <a class="dropdown-item" th:href="@{/admin/changePassword}">Change Password</a>
 				            </div>
 				          </li>						    
 					      <li sec:authorize="hasRole('ROLE_INVENTORY')" class="nav-item">
@@ -89,13 +89,13 @@
 					    <a class="nav-link" th:if="${platform != null}" th:href="@{/admin/step2/__${platform.platformId}__}">Step 2(Silicons)</a>
 					  </li>
 					  <li class="nav-item">
-					    <a class="nav-link" data-toggle="tab" href="#step3">Step 3(Devices&Components)</a>
+					    <a class="nav-link" th:if="${platform != null}" th:href="@{/admin/step3/__${platform.platformId}__}">Step 3(DevicesAndComponents)</a>
 					  </li>
 					  <li class="nav-item">
-					    <a class="nav-link" data-toggle="tab" href="#step3">Step 4(BKC&Software)</a>
+					    <a class="nav-link" th:if="${platform != null}" th:href="@{/admin/step4/__${platform.platformId}__}">Step 4(BKCAndSoftware)</a>
 					  </li>
 					  <li class="nav-item">
-					    <a class="nav-link" data-toggle="tab" href="#step3">Step 5(Networking)</a>
+					    <a class="nav-link" th:if="${platform != null}" th:href="@{/admin/step5/__${platform.platformId}__}">Step 5(Networking)</a>
 					  </li>					  
 					</ul>
 					
@@ -179,34 +179,25 @@
 								  	<div class="col-md-4 mb-3">
 								      <div class="input-group">
 								        <div class="input-group-prepend">
-								          <span class="input-group-text" id="inputGroupPrepend">Is Shared Location?</span>
+								          <span class="input-group-text" id="inputGroupPrepend">Project</span>
 								        </div>
-									    <select class="custom-select" id="locationIsShared" name="locationIsShared" required>
-									      <option value="">--Select Option--</option>
-									      <option value="false">NO</option>
-									      <option value="true">YES</option>
+									    <select class="custom-select" id="project" name="project" required>
+									      <option value="">--Select Project--</option>
+									      <option value="NEON CITY">NEON CITY</option>
+									      <option value="MAYAN CITY">MAYAN CITY</option>
+									      <option value="CROWN PASS">CROWN PASS</option>
+									      <option value="KABY LAKE">KABY LAKE</option>
+									      <option value="SKYLAKE">SKYLAKE</option>
+									      <option value="CASCALAKE">CASCALAKE</option>
+									      <option value="MINERAL HILL">MINERAL HILL</option>
 									    </select>
 								        <div class="invalid-feedback">
-								          Please write a valid station.
+								          Please write a valid Project.
 								        </div>
 								      </div>
-								    </div>
-								    
-								  	<div class="col-md-4 mb-3">
-								      <div class="input-group">
-								        <div class="input-group-prepend">
-								          <span class="input-group-text" id="inputGroupPrepend">Shared Location</span>
-								        </div>
-									    <select class="custom-select" id="locationShared" name="locationShared" required>
-									      <option value="">--Select Location Shared--</option>
-									      <option th:each="location : ${locations}" th:value="${location.locationId}" th:utext="${location.locationId}"></option>
-									    </select>
-								        <div class="invalid-feedback">
-								          Please write a valid Location Shared.
-								        </div>
-								      </div>
-								    </div>
-								    			    
+								    </div>								  	
+								  	
+								    								    			    
 								  </div>
 								  								  
 								  <div class="form-row">
@@ -237,28 +228,7 @@
 										    </div>								       
 				      							    		    
 								    </div>
-								    
-								    
-								  	<div class="col-md-4 mb-3">
-								      <div class="input-group">
-								        <div class="input-group-prepend">
-								          <span class="input-group-text" id="inputGroupPrepend">Project</span>
-								        </div>
-									    <select class="custom-select" id="project" name="project" required>
-									      <option value="">--Select Project--</option>
-									      <option value="NEON CITY">NEON CITY</option>
-									      <option value="MAYAN CITY">MAYAN CITY</option>
-									      <option value="CROWN PASS">CROWN PASS</option>
-									      <option value="KABY LAKE">KABY LAKE</option>
-									      <option value="SKYLAKE">SKYLAKE</option>
-									      <option value="CASCALAKE">CASCALAKE</option>
-									      <option value="MINERAL HILL">MINERAL HILL</option>
-									    </select>
-								        <div class="invalid-feedback">
-								          Please write a valid Project.
-								        </div>
-								      </div>
-								    </div>									   								    
+								    								    									   								    
 	
 								  </div>
 								  
@@ -566,8 +536,6 @@
 		  		$("#ismNumber").val("[(${platform.ismNumber})]");
 		  		$("#ownedBy").val("[(${platform.ownedBy})]");
 		  		$("#locationId").val("[(${platform.location.locationId})]");
-		  		$("#locationShared").val("[(${platform.locationShared.locationId})]");
-		  		$("#locationIsShared").val("[(${platform.locationIsShared})]");
 		  		$('#myonoffswitch2').prop('checked', [(${platform.startStatus})]);
 		  		$('#myonoffswitch4').prop('checked', [(${platform.cloudReady})]);		  		
 		  		$("#receivedDate").val("[(${#dates.format(platform.receivedDate, 'yyyy-MM-dd')})]");

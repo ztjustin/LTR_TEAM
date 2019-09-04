@@ -15,8 +15,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -24,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
-@Table(name="platform", uniqueConstraints={@UniqueConstraint(columnNames = {"serialPlatform","name"})})
+@Table(name="platform")
 public class Platform implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -38,26 +39,18 @@ public class Platform implements Serializable {
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="locationId", nullable = false)
 	private Location location;
-	
-	@Column(name = "locationIsShared", nullable = false, length= 45)
-	private boolean locationIsShared;
-	
-	@JsonIgnore
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="idLocationShared", nullable = true)
-	private Location locationShared;
-	
+		
 	@Enumerated(EnumType.STRING)
 	@JoinColumn(name="bussinessUnit", nullable = true)
 	private BussinessUnit bussinessUnit;
 	
-	@Column(name = "name", nullable = false, length= 45)
+	@Column(name = "name", nullable = false, length= 45,unique = true)
 	private String name;
 	
 	@Column(name = "project", nullable = false, length= 45)
 	private String project;
 	
-	@Column(name = "serialPlatform", nullable = false, length= 45)
+	@Column(name = "serialPlatform", nullable = false, length= 45, unique = true)
 	private String serialPlatform;
 	
 	@Column(name = "model", nullable = false, length= 45)
@@ -103,22 +96,22 @@ public class Platform implements Serializable {
 	@OneToMany(mappedBy="platform")
 	private List<Annotation> annotations;
 	
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "platform")
+	private Host Host;
+	
 	/*GETTERS AND SETTERS*/
 	
 	public Platform() {
 		super();
 	}
 	
-	public Platform(Long platformId, Location location, boolean locationIsShared, Location locationShared,
-			BussinessUnit bussinessUnit, String name, String project, String serialPlatform, String model,
-			String chasisSerial, String chasisModel, String ismpKitName, String ismpSerialNumber, String assignedTo,
-			String ownedBy, int ismNumber, Date receivedDate, int asset, boolean startStatus, boolean finalStatus,
-			boolean cloudReady, List<Annotation> annotations) {
+	public Platform(Long platformId, Location location, BussinessUnit bussinessUnit, String name, String project,
+			String serialPlatform, String model, String chasisSerial, String chasisModel, String ismpKitName,
+			String ismpSerialNumber, String assignedTo, String ownedBy, int ismNumber, Date receivedDate, int asset,
+			boolean startStatus, boolean finalStatus, boolean cloudReady, List<Annotation> annotations) {
 		super();
 		this.platformId = platformId;
 		this.location = location;
-		this.locationIsShared = locationIsShared;
-		this.locationShared = locationShared;
 		this.bussinessUnit = bussinessUnit;
 		this.name = name;
 		this.project = project;
@@ -139,8 +132,6 @@ public class Platform implements Serializable {
 		this.annotations = annotations;
 	}
 
-
-
 	public Long getPlatformId() {
 		return platformId;
 	}
@@ -155,22 +146,6 @@ public class Platform implements Serializable {
 
 	public void setLocationId(Location locationId) {
 		this.location = locationId;
-	}
-
-	public boolean isLocationIsShared() {
-		return locationIsShared;
-	}
-
-	public void setLocationIsShared(boolean locationIsShared) {
-		this.locationIsShared = locationIsShared;
-	}
-
-	public Location getLocationShared() {
-		return locationShared;
-	}
-
-	public void setLocationShared(Location locationShared) {
-		this.locationShared = locationShared;
 	}
 
 	public BussinessUnit getBussinessUnit() {
@@ -326,17 +301,23 @@ public class Platform implements Serializable {
 		this.location = location;
 	}
 
+	public Host getHost() {
+		return Host;
+	}
+
+	public void setHost(Host host) {
+		Host = host;
+	}
+
 	@Override
 	public String toString() {
-		return "Platform [platformId=" + platformId + ", location=" + location + ", locationIsShared="
-				+ locationIsShared + ", locationShared=" + locationShared + ", bussinessUnit=" + bussinessUnit
+		return "Platform [platformId=" + platformId + ", location=" + location + ", bussinessUnit=" + bussinessUnit
 				+ ", name=" + name + ", project=" + project + ", serialPlatform=" + serialPlatform + ", model=" + model
 				+ ", chasisSerial=" + chasisSerial + ", chasisModel=" + chasisModel + ", ismpKitName=" + ismpKitName
 				+ ", ismpSerialNumber=" + ismpSerialNumber + ", assignedTo=" + assignedTo + ", OwnedBy=" + OwnedBy
 				+ ", ismNumber=" + ismNumber + ", receivedDate=" + receivedDate + ", asset=" + asset + ", startStatus="
 				+ startStatus + ", finalStatus=" + finalStatus + ", cloudReady=" + cloudReady + ", annotations="
-				+ annotations + "]";
+				+ annotations + ", Host=" + Host + "]";
 	}
-
 	
 }
